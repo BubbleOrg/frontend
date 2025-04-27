@@ -2,9 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import { SendHorizontal, Settings } from 'lucide-react';
 import botAvatar from './assets/catdp.png';
-import Login from './Login'; // your login page
+import elgGif from './assets/elg.gif';
+import Login from './Login';
+import ishGif from './assets/ishgif.gif';
+import { LogOut } from 'lucide-react';
 
-let socket; // declare globally so we can control connection
+let socket;
 
 const App = () => {
   const [user, setUser] = useState(() => {
@@ -21,7 +24,6 @@ const App = () => {
 
       socket.on('receive_message', (data) => {
         setMessages((prev) => {
-          // Remove any existing "typing" messages first
           const filtered = prev.filter((msg) => !msg.typing);
           return [...filtered, data];
         });
@@ -70,7 +72,7 @@ const App = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col h-screen bg-gray-50 relative">
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 bg-white shadow-sm">
         <div className="flex items-center gap-3">
@@ -81,9 +83,10 @@ const App = () => {
         </div>
         <button
           onClick={handleLogout}
-          className="text-gray-500 hover:text-indigo-500 transition-transform hover:rotate-90 duration-300"
+          className="Hellotext-indigo-500 transition-transform hover:rotate-90 duration-300"
+          title="Logout"
         >
-          Logout
+          <LogOut size={24} />
         </button>
       </div>
 
@@ -109,7 +112,7 @@ const App = () => {
                 <img
                   src={botAvatar}
                   alt="Bot Avatar"
-                  className="w-8 h-8 rounded-full shadow-sm"
+                  className="w-12 h-12 rounded-full shadow-sm"
                 />
                 <div className="max-w-xs px-4 py-3 rounded-2xl shadow-md bg-white text-gray-800 border border-gray-200">
                   <div className="text-sm font-semibold truncate mb-1">
@@ -130,9 +133,15 @@ const App = () => {
             >
               {!isOwnMessage && (
                 <img
-                  src={isBotMessage ? botAvatar : 'https://via.placeholder.com/32'}
+                  src={
+                    isBotMessage
+                      ? botAvatar
+                      : msg.sender.toLowerCase() === 'ishmam'
+                        ? ishGif
+                        : 'https://via.placeholder.com/32'
+                  }
                   alt="Avatar"
-                  className="w-8 h-8 rounded-full shadow-sm"
+                  className="w-12 h-12 rounded-full shadow-sm"
                 />
               )}
 
@@ -154,7 +163,11 @@ const App = () => {
               </div>
 
               {isOwnMessage && (
-                <div className="w-8 h-8 rounded-full bg-indigo-400 shadow-sm" />
+                <img
+                  src={user.username.toLowerCase() === 'ishmam' ? ishGif : 'https://via.placeholder.com/32'}
+                  alt="Your Avatar"
+                  className="w-12 h-12 rounded-full shadow-sm"
+                />
               )}
             </div>
           );
@@ -163,7 +176,10 @@ const App = () => {
       </div>
 
       {/* Input Field */}
-      <div className="flex items-center px-6 py-4 bg-white shadow-inner border-t">
+      <div className="flex justify-end w-full">
+        <img src={elgGif} alt="elg Cat" className="w-12 h-auto" />
+      </div>
+      <div className="flex items-center px-3 py-3 bg-white shadow-inner border-t border-gray-300">
         <input
           type="text"
           className="flex-1 px-5 py-2.5 rounded-full bg-gray-100 border border-gray-200 shadow-sm outline-none placeholder-gray-500 focus:ring-2 focus:ring-indigo-400 transition"
