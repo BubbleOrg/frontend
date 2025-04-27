@@ -83,7 +83,7 @@ const App = () => {
         </div>
         <button
           onClick={handleLogout}
-          className="Hellotext-indigo-500 transition-transform hover:rotate-90 duration-300"
+          className="text-indigo-500 transition-transform hover:rotate-90 duration-300"
           title="Logout"
         >
           <LogOut size={24} />
